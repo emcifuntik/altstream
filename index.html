@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тухик Стримит!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <style>
+        body {
+            background: #181818;
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            font-size: 16px;
+        }
+        .app {
+            display: flex;
+            justify-content: center;
+            padding: 2em;
+            box-sizing: border-box;
+            width: 100vw;
+            height: 100vh;
+        }
+        button {
+            background: none;
+            border: none;
+            padding: 0;
+            width: 1.5em;
+            height: 1.5em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity .2s;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: .6;
+        }
+        .wrapper {
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        video {
+            height: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: absolute;
+            bottom: 1.5em;
+            padding: 1em;
+            display: flex;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            align-items: center;
+            left: 50%;
+            transform: translateX(-50%) translateY(5%);
+            opacity: 0;
+            user-select: none;
+            transition: .3s ease-in-out;
+            transition-delay: 1.5s;
+        }
+
+        .wrapper:hover .overlay {
+            transition: .3s ease-in-out;
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .overlay * + * {
+            margin: 0 .7em;
+        }
+
+        /* .overlay:first-child
+        .overlay:last-child {
+            margin: 0;
+        } */
+
+        .overlay .progress {
+            width: 10vw;
+            background: rgba(255,255,255,.3);
+            height: .3em;
+            border-radius: 100px;
+            position: relative;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .overlay .progress:hover {
+            background: rgba(255,255,255,.4);
+            height: .5em;
+        }
+
+        .overlay .progress .inline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: #fff;
+            border-radius: 100px;
+        }
+
+        .overlay .time {
+            opacity: .6;
+            font-weight: 500;
+        }
+
+        .sidebar {
+            width: 20rem;
+            margin-left: 2rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            background: #242424;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: .875em;
+        }
+
+        .sidebar .upper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar .upper .viewers {
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar .upper .viewers svg {
+            margin-right: .5rem;
+        }
+
+        .sidebar .chat {
+            line-height: 1.4em;
+            flex-grow: 1;
+            transform: rotate(180deg);
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, #000000 10%);
+            mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, #000000 10%);
+        }
+
+        .sidebar .chat span {
+            display: block;
+            margin-bottom: .5rem;
+            transform: rotate(180deg);
+        }
+
+        .sidebar .chat b {
+            font-weight: 600;
+        }
+
+        .sidebar .chat i {
+            opacity: .3;
+        }
+
+        .sidebar .input {
+            margin-top: 1rem;
+        }
+
+        .sidebar .input span {
+            display: block;
+            text-align: center;
+            font-weight: 500;
+            width: 100%;
+            line-height: 1.2em;
+            color: rgba(255,255,255,.75);
+        }
+
+        .sidebar .input span a {
+            color: inherit;
+            transition: .2s;
+        }
+
+        .sidebar .input span a:hover {
+            color: rgba(255,255,255,1);
+        }
+
+        .sidebar .input input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: none;
+            padding: 1rem;
+            box-sizing: border-box;
+            color: inherit;
+            font-family: inherit;
+            font-size: inherit;
+            margin-top: 1rem;
+            transition: .2s;
+        }
+
+        .sidebar .input input:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar .input input:focus {
+            outline: none;
+            background: #fff;
+            color: #000;
+        }
+
+        .sidebar .input input::selection {
+            color: #fff;
+            background: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <div class="wrapper">
+            <video src="#" poster="https://code.visualstudio.com/assets/updates/1_37/icons.gif"></video>
+            <div class="overlay">
+                <svg width="64" height="32" viewBox="0 0 64 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- live tag -->
+                    <rect width="64" height="32" rx="8" fill="#E20338"/>
+                    <circle cx="14" cy="16" r="4" fill="white"/>
+                    <path d="M29.3864 10.3636H26.9659V22H29.3864V10.3636ZM31.3253 22H33.7457V13.2727H31.3253V22ZM32.5412 12.1477C33.2628 12.1477 33.8537 11.5966 33.8537 10.9205C33.8537 10.25 33.2628 9.69886 32.5412 9.69886C31.8253 9.69886 31.2344 10.25 31.2344 10.9205C31.2344 11.5966 31.8253 12.1477 32.5412 12.1477ZM43.821 13.2727H41.2585L39.4517 19.517H39.3608L37.5483 13.2727H34.9915L38.0426 22H40.7699L43.821 13.2727ZM48.7401 22.1705C50.8991 22.1705 52.3537 21.1193 52.6946 19.5L50.456 19.3523C50.2116 20.017 49.5866 20.3636 48.7798 20.3636C47.5696 20.3636 46.8026 19.5625 46.8026 18.2614V18.2557H52.7457V17.5909C52.7457 14.625 50.9503 13.1591 48.6435 13.1591C46.0753 13.1591 44.4105 14.983 44.4105 17.6761C44.4105 20.4432 46.0526 22.1705 48.7401 22.1705ZM46.8026 16.7557C46.8537 15.7614 47.6094 14.9659 48.6832 14.9659C49.7344 14.9659 50.4616 15.7159 50.4673 16.7557H46.8026Z" fill="white"/>
+                </svg>                                       
+                <button>
+                    <svg width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- pause -->
+                        <path d="M3.40251 0.5H1.90251C1.50469 0.5 1.12316 0.658035 0.841852 0.93934C0.560547 1.22064 0.402512 1.60218 0.402512 2V14C0.402512 14.3978 0.560547 14.7794 0.841852 15.0607C1.12316 15.342 1.50469 15.5 1.90251 15.5H3.40251C3.80034 15.5 4.18187 15.342 4.46317 15.0607C4.74448 14.7794 4.90251 14.3978 4.90251 14V2C4.90251 1.60218 4.74448 1.22064 4.46317 0.93934C4.18187 0.658035 3.80034 0.5 3.40251 0.5V0.5Z" fill="white"/>
+                        <path d="M10.9025 0.5H9.40251C9.00469 0.5 8.62316 0.658035 8.34185 0.93934C8.06055 1.22064 7.90251 1.60218 7.90251 2V14C7.90251 14.3978 8.06055 14.7794 8.34185 15.0607C8.62316 15.342 9.00469 15.5 9.40251 15.5H10.9025C11.3003 15.5 11.6819 15.342 11.9632 15.0607C12.2445 14.7794 12.4025 14.3978 12.4025 14V2C12.4025 1.60218 12.2445 1.22064 11.9632 0.93934C11.6819 0.658035 11.3003 0.5 10.9025 0.5V0.5Z" fill="white"/>
+                    </svg>                        
+                    <svg style="display: none" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- play -->
+                        <path d="M1.65251 18C1.4536 18 1.26283 17.921 1.12218 17.7803C0.981529 17.6397 0.902512 17.4489 0.902512 17.25V0.749994C0.902534 0.619666 0.936517 0.491593 1.00111 0.378399C1.06571 0.265205 1.15868 0.170796 1.27088 0.104479C1.38307 0.0381625 1.51061 0.0022257 1.64092 0.000211652C1.77123 -0.0018024 1.89982 0.0301758 2.01401 0.0929939L17.014 8.34299C17.1316 8.40774 17.2297 8.50285 17.298 8.61842C17.3663 8.73398 17.4023 8.86576 17.4023 8.99999C17.4023 9.13423 17.3663 9.26601 17.298 9.38157C17.2297 9.49713 17.1316 9.59225 17.014 9.65699L2.01401 17.907C1.90327 17.968 1.77892 18 1.65251 18Z" fill="white"/>
+                    </svg>                                              
+                </button>
+                <div class="progress">
+                    <div class="inline" style="width: 69%"></div>
+                </div>
+                <span class="time">
+                    12:34 / 59:32
+                </span>
+                <button class="volume">
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- volume high -->
+                        <path d="M19.7725 5.06L18.625 6.0275C19.8039 7.42395 20.4323 9.20279 20.3923 11.0299C20.3522 12.8569 19.6464 14.6065 18.4075 15.95L19.51 17C20.9977 15.3879 21.8455 13.2878 21.8938 11.0946C21.9421 8.90146 21.1878 6.76613 19.7725 5.09V5.06Z" fill="white"/>
+                        <path d="M15.5875 8C16.2946 8.83852 16.6711 9.90644 16.6463 11.003C16.6214 12.0996 16.1969 13.1494 15.4525 13.955L16.555 14.975C17.5471 13.8998 18.1123 12.4991 18.144 11.0364C18.1758 9.57369 17.672 8.14979 16.7275 7.0325L15.5875 8Z" fill="white"/>
+                        <path d="M12.9025 21.5C12.8033 21.4996 12.7051 21.4795 12.6137 21.4409C12.5223 21.4022 12.4395 21.3459 12.37 21.275L6.655 15.5H1.6525C1.45358 15.5 1.26282 15.421 1.12217 15.2803C0.981514 15.1397 0.902496 14.9489 0.902496 14.75V7.24999C0.902496 7.05108 0.981514 6.86031 1.12217 6.71966C1.26282 6.57901 1.45358 6.49999 1.6525 6.49999H6.655L12.37 0.724991C12.5105 0.585303 12.7006 0.506897 12.8987 0.506897C13.0969 0.506897 13.287 0.585303 13.4275 0.724991C13.5688 0.863464 13.6497 1.05216 13.6525 1.24999V20.75C13.6525 20.9489 13.5735 21.1397 13.4328 21.2803C13.2922 21.421 13.1014 21.5 12.9025 21.5Z" fill="white"/>
+                    </svg>
+                    <svg style="display: none" width="18" height="21" viewBox="0 0 18 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- volume low -->
+                        <path d="M15.825 6.495L14.685 7.5C15.3921 8.33851 15.7686 9.40643 15.7438 10.503C15.7189 11.5996 15.2944 12.6494 14.55 13.455L15.6525 14.475C16.6446 13.3998 17.2098 11.9991 17.2415 10.5364C17.2733 9.07369 16.7695 7.64978 15.825 6.5325V6.495Z" fill="white"/>
+                        <path d="M12 21C11.9008 20.9996 11.8026 20.9795 11.7112 20.9409C11.6198 20.9022 11.537 20.8459 11.4675 20.775L5.7525 15H0.75C0.551088 15 0.360322 14.921 0.21967 14.7803C0.0790178 14.6397 0 14.4489 0 14.25V6.74999C0 6.55108 0.0790178 6.36031 0.21967 6.21966C0.360322 6.07901 0.551088 5.99999 0.75 5.99999H5.7525L11.4675 0.224992C11.608 0.0853033 11.7981 0.00689697 11.9963 0.00689697C12.1944 0.00689697 12.3845 0.0853033 12.525 0.224992C12.6663 0.363464 12.7472 0.552165 12.75 0.749992V20.25C12.75 20.4489 12.671 20.6397 12.5303 20.7803C12.3897 20.921 12.1989 21 12 21Z" fill="white"/>
+                    </svg>
+                    <svg style="display: none" width="23" height="21" viewBox="0 0 23 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- volume off -->
+                        <path d="M22.25 7.8075L21.1925 6.75L18.5 9.4425L15.8075 6.75L14.75 7.8075L17.4425 10.5L14.75 13.1925L15.8075 14.25L18.5 11.5575L21.1925 14.25L22.25 13.1925L19.5575 10.5L22.25 7.8075Z" fill="white"/>
+                        <path d="M12.5 21C12.4008 20.9996 12.3026 20.9795 12.2112 20.9409C12.1198 20.9022 12.037 20.8459 11.9675 20.775L6.2525 15H1.25C1.05109 15 0.860322 14.921 0.71967 14.7803C0.579018 14.6397 0.5 14.4489 0.5 14.25V6.74999C0.5 6.55108 0.579018 6.36031 0.71967 6.21966C0.860322 6.07901 1.05109 5.99999 1.25 5.99999H6.2525L11.9675 0.224992C12.108 0.0853033 12.2981 0.00689697 12.4963 0.00689697C12.6944 0.00689697 12.8845 0.0853033 13.025 0.224992C13.1663 0.363464 13.2472 0.552165 13.25 0.749992V20.25C13.25 20.4489 13.171 20.6397 13.0303 20.7803C12.8897 20.921 12.6989 21 12.5 21Z" fill="white"/>
+                    </svg>
+                </button>
+                <button>
+                    <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- fullscreen -->
+                        <path d="M13.5 9.5H15V3.5H9V5H13.5V9.5Z" fill="white"/>
+                        <path d="M3 15.5H9V14H4.5V9.5H3V15.5Z" fill="white"/>
+                        <path d="M16.5 18.5H1.5C1.1023 18.4996 0.720997 18.3414 0.439779 18.0602C0.15856 17.779 0.000397108 17.3977 0 17V2C0.000397108 1.6023 0.15856 1.221 0.439779 0.939779C0.720997 0.65856 1.1023 0.500397 1.5 0.5H16.5C16.8977 0.500397 17.279 0.65856 17.5602 0.939779C17.8414 1.221 17.9996 1.6023 18 2V17C17.9996 17.3977 17.8414 17.779 17.5602 18.0602C17.279 18.3414 16.8977 18.4996 16.5 18.5ZM1.5 2V17H16.5007L16.5 2H1.5Z" fill="white"/>
+                    </svg>                        
+                </button>
+            </div>
+        </div>
+        <div class="sidebar">
+            <div class="upper">
+                <button>
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- close chat -->
+                        <path d="M15.75 2.25H2.25C1.95163 2.25 1.66548 2.36853 1.4545 2.5795C1.24353 2.79048 1.125 3.07663 1.125 3.375V14.625C1.125 14.9234 1.24353 15.2095 1.4545 15.4205C1.66548 15.6315 1.95163 15.75 2.25 15.75H15.75C16.0484 15.75 16.3345 15.6315 16.5455 15.4205C16.7565 15.2095 16.875 14.9234 16.875 14.625V3.375C16.875 3.07663 16.7565 2.79048 16.5455 2.5795C16.3345 2.36853 16.0484 2.25 15.75 2.25ZM2.25 3.375H11.25V14.625H2.25V3.375ZM15.75 14.625H12.375V3.375H15.75V14.625Z" fill="white" />
+                    </svg>
+                    <svg style="display: none" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- open chat -->
+                        <path d="M15.75 2.25H2.25C1.95163 2.25 1.66548 2.36853 1.4545 2.5795C1.24353 2.79048 1.125 3.07663 1.125 3.375V14.625C1.125 14.9234 1.24353 15.2095 1.4545 15.4205C1.66548 15.6315 1.95163 15.75 2.25 15.75H15.75C16.0484 15.75 16.3345 15.6315 16.5455 15.4205C16.7565 15.2095 16.875 14.9234 16.875 14.625V3.375C16.875 3.07663 16.7565 2.79048 16.5455 2.5795C16.3345 2.36853 16.0484 2.25 15.75 2.25ZM2.25 3.375H11.25V14.625H2.25V3.375ZM15.75 14.625H12.375V3.375H15.75V14.625Z" fill="white"/>
+                    </svg>                        
+                </button>
+                <span class="viewers">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.875 15.875H14.75V13.0625C14.7491 12.3169 14.4525 11.602 13.9253 11.0747C13.398 10.5475 12.6831 10.2509 11.9375 10.25V9.125C12.9814 9.12619 13.9823 9.54142 14.7204 10.2796C15.4586 11.0177 15.8738 12.0186 15.875 13.0625V15.875Z" fill="white"/>
+                        <path d="M11.375 15.875H10.25V13.0625C10.2491 12.3169 9.9525 11.602 9.42525 11.0747C8.898 10.5475 8.18315 10.2509 7.4375 10.25H4.0625C3.31685 10.2509 2.602 10.5475 2.07475 11.0747C1.5475 11.602 1.25089 12.3169 1.25 13.0625V15.875H0.125V13.0625C0.126191 12.0186 0.541416 11.0177 1.27958 10.2796C2.01775 9.54142 3.01858 9.12619 4.0625 9.125H7.4375C8.48142 9.12619 9.48225 9.54142 10.2204 10.2796C10.9586 11.0177 11.3738 12.0186 11.375 13.0625V15.875Z" fill="white"/>
+                        <path d="M10.25 0.125V1.25C10.9959 1.25 11.7113 1.54632 12.2387 2.07376C12.7662 2.60121 13.0625 3.31658 13.0625 4.0625C13.0625 4.80842 12.7662 5.52379 12.2387 6.05124C11.7113 6.57868 10.9959 6.875 10.25 6.875V8C11.2943 8 12.2958 7.58516 13.0342 6.84673C13.7727 6.10831 14.1875 5.10679 14.1875 4.0625C14.1875 3.01821 13.7727 2.01669 13.0342 1.27827C12.2958 0.539843 11.2943 0.125 10.25 0.125Z" fill="white"/>
+                        <path d="M5.75 1.25C6.30626 1.25 6.85003 1.41495 7.31254 1.72399C7.77506 2.03303 8.13554 2.47229 8.34841 2.9862C8.56128 3.50012 8.61698 4.06562 8.50846 4.61119C8.39994 5.15676 8.13207 5.6579 7.73874 6.05124C7.3454 6.44457 6.84426 6.71244 6.29869 6.82096C5.75312 6.92948 5.18762 6.87378 4.6737 6.66091C4.15979 6.44804 3.72054 6.08755 3.41149 5.62504C3.10245 5.16253 2.9375 4.61876 2.9375 4.0625C2.9375 3.31658 3.23382 2.60121 3.76126 2.07376C4.28871 1.54632 5.00408 1.25 5.75 1.25ZM5.75 0.125C4.97124 0.125 4.20996 0.35593 3.56244 0.788588C2.91493 1.22125 2.41025 1.8362 2.11223 2.55568C1.81421 3.27517 1.73623 4.06687 1.88816 4.83067C2.04009 5.59447 2.4151 6.29606 2.96577 6.84673C3.51644 7.3974 4.21803 7.77241 4.98183 7.92434C5.74563 8.07627 6.53733 7.99829 7.25682 7.70027C7.9763 7.40225 8.59126 6.89758 9.02391 6.25006C9.45657 5.60254 9.6875 4.84126 9.6875 4.0625C9.6875 3.01821 9.27266 2.01669 8.53423 1.27827C7.79581 0.539842 6.79429 0.125 5.75 0.125Z" fill="white"/>
+                    </svg>                        
+                    128    
+                </span>
+            </div>
+            <div class="chat">
+                <span class="message"><b style="color: #FFE157">1combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">2combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">3combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">4combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">5combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">6combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">7combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">1combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">2combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">3combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">4combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">5combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">6combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">7combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">1combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">2combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">3combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">4combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">5combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">6combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+                <span class="message"><b style="color: #FFE157">7combowombo</b> @cringelord ты пропустил великолепный стрим по скайриму виар <i>21:56</i></span>
+            </div>
+            <div class="input blocked">
+                <span>
+                    Для отправки сообщений
+                    <br> в чат нужно <a href="#">залогиниться</a>
+                </span>
+                <input type="text" placeholder="Введите сообщение">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
