@@ -13,10 +13,10 @@
 </head>
 
 <body>
+    <script src="https://hls-js.netlify.app/dist/hls.js"></script>
     <div class="app">
-
         <div class="wrapper">
-            <video src="#" poster="https://code.visualstudio.com/assets/updates/1_37/icons.gif"></video>
+            <video id="stream" src="#" poster="icons/offline.png"></video>
             <div class="overlay">
                 <img class="live" src="icons/live.svg" alt="">
                 <button>
@@ -37,13 +37,15 @@
                 <div class="volumeLevel">
                     <div class="inner" style="width: 69%"></div>
                 </div>
+                <button>
+                    <img src="icons/pip.svg" alt="">
+                </button>
                 <button class="fullscreen">
                     <img src="icons/fs-enter.svg" alt="">
                     <img style="display: none" src="icons/close.svg" alt="">
                 </button>
             </div>
         </div>
-
         <div class="sidebar">
             <div class="upper">
                 <button>
@@ -56,48 +58,11 @@
                 </span>
             </div>
             <div class="chat">
-                <span class="message"><b style="color: #FFE157">1combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">2combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">3combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">4combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">5combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">6combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">7combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">1combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">2combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">3combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">4combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">5combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">6combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">7combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">1combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">2combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">3combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">4combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">5combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">6combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
-                <span class="message"><b style="color: #FFE157">7combowombo</b> @cringelord ты пропустил великолепный
-                    стрим по скайриму виар <i>21:56</i></span>
+                <span class="message">
+                    <b style="color: #FFE157">1combowombo</b>
+                    @cringelord ты пропустил великолепный стрим по скайриму виар
+                    <i>21:56</i>
+                </span>
             </div>
             <div class="input blocked">
                 <span>
@@ -107,8 +72,26 @@
                 <input type="text" placeholder="Введите сообщение">
             </div>
         </div>
-
     </div>
+    <script>
+        var video = document.getElementById('stream');
+        if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = 'https://stream.tuxick.dev/hls/tuxick.m3u8';
+            video.addEventListener('canplay', function () {
+                video.play();
+            });
+        } else if (Hls.isSupported()) {
+            var hls = new Hls({
+                debug: true
+            });
+            hls.loadSource('https://stream.tuxick.dev/hls/tuxick.m3u8');
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+                video.muted = true;
+                video.play();
+            });
+        }
+    </script>
 </body>
 
 </html>
