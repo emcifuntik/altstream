@@ -1,0 +1,257 @@
+body {
+    background: #181818;
+    font-family: 'Inter', sans-serif;
+    color: #fff;
+    font-size: 16px;
+}
+
+.app {
+    display: flex;
+    justify-content: center;
+    padding: 2em;
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
+}
+
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    width: 1.5em;
+    height: 1.5em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .2s;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: .6;
+}
+
+.wrapper {
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.wrapper.idle {
+    cursor: none;
+}
+
+video {
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 1.5em;
+    padding: 1em;
+    display: flex;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    align-items: center;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    user-select: none;
+    transition: .3s ease-in-out;
+}
+
+.overlay.idle {
+    transform: translateX(-50%) translateY(5%) !important;
+    opacity: 0;
+}
+
+.overlay *+* {
+    margin: 0 .6em;
+}
+
+.overlay .live {
+    margin-right: .35em;
+}
+
+.overlay .progress,
+.overlay .volumeLevel {
+    width: 10vw;
+    background: rgba(255, 255, 255, .3);
+    height: .3em;
+    border-radius: 100px;
+    position: relative;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.overlay .progress:hover,
+.overlay .volumeLevel:hover {
+    background: rgba(255, 255, 255, .4);
+    height: .5em;
+}
+
+.overlay .progress .inner,
+.overlay .volumeLevel .inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: #fff;
+    border-radius: 100px;
+}
+
+.overlay .time {
+    opacity: .6;
+    font-weight: 500;
+}
+
+.overlay .volumeLevel {
+    width: 3em;
+}
+
+.overlay .fullscreen {
+    margin-right: 0;
+}
+
+.sidebar {
+    width: 20rem;
+    height: 100%;
+    margin-left: 2rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    background: #242424;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: .875em;
+    transition: .5s;
+}
+
+.sidebar.hidden {
+    width: 10em;
+    height: 5em;
+    overflow: hidden;
+}
+
+.sidebar .upper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    user-select: none;
+}
+
+.sidebar .upper .viewers {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .upper .viewers img {
+    margin-right: .5rem;
+}
+
+.sidebar .chat {
+    line-height: 1.4em;
+    flex-grow: 1;
+    transform: rotate(180deg);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, #000000 10%);
+    mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, #000000 10%);
+    transition: .1s;
+    transition-delay: .4s;
+}
+
+.sidebar .chat span {
+    display: block;
+    margin-bottom: .5rem;
+    transform: rotate(180deg);
+}
+
+.sidebar .chat b {
+    font-weight: 600;
+    user-select: none;
+}
+
+.sidebar .chat i {
+    opacity: .3;
+    user-select: none;
+}
+
+.sidebar.hidden .chat {
+    opacity: 0;
+    transition: .1s
+}
+
+.sidebar .input {
+    margin-top: 1rem;
+    transition: .1s;
+    transition-delay: .4s;
+}
+
+.sidebar .input span {
+    text-align: center;
+    font-weight: 500;
+    width: 100%;
+    line-height: 1.2em;
+    color: rgba(255, 255, 255, .75);
+    display: none;
+    user-select: none;
+}
+
+.sidebar .input.blocked span {
+    display: block;
+}
+
+.sidebar .input span a {
+    color: inherit;
+    transition: .2s;
+}
+
+.sidebar .input span a:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+.sidebar .input input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: none;
+    padding: 1rem;
+    box-sizing: border-box;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    margin-top: 1rem;
+    transition: .2s;
+}
+
+.sidebar .input input:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .input input:focus {
+    outline: none;
+    background: #fff;
+    color: #000;
+}
+
+.sidebar .input input::selection {
+    color: #fff;
+    background: #000;
+}
+
+.sidebar .input.blocked input {
+    pointer-events: none;
+    filter: blur(2px);
+    user-select: none;
+}
+
+.sidebar.hidden .input {
+    transition: .1s;
+    opacity: 0;
+}
